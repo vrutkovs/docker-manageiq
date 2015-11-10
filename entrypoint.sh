@@ -7,6 +7,7 @@ BRANCH=${BRANCH:-master}
 echo "Repo: $REPO"
 echo "Branch: $BRANCH"
 
+git clone --depth=1 -b $BRANCH $REPO manageiq
 
 echo "Installing ManageIQ"
 cd /manageiq
@@ -19,7 +20,7 @@ nohup /start_postgres.sh &
 nohup /usr/bin/memcached -u root &
 echo "waiting for the DB to start"
 sleep 5
-cd /manageiq/vmdb
+
 if [ -e /var/lib/pgsql/initialized ]
 then
 	echo "Reusing existing DB"
