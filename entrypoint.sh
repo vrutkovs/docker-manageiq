@@ -8,9 +8,10 @@ echo "Repo: $REPO"
 echo "Branch: $BRANCH"
 
 git clone --depth=1 -b $BRANCH $REPO manageiq
+cd /manageiq
+echo "Commit `git rev-parse HEAD`"
 
 echo "Installing ManageIQ"
-cd /manageiq
 bundle install --without qpid
 cp config/database.pg.yml config/database.yml
 cp certs/v2_key.dev certs/v2_key
