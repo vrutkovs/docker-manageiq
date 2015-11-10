@@ -26,6 +26,6 @@ EXPOSE 3000 4000
 
 COPY createDB.sh /
 RUN chmod +x createDB.sh
-COPY entrypoint.sh /
-RUN chmod +x entrypoint.sh
-CMD ["/bin/bash", "-l", "/entrypoint.sh"]
+COPY install.sh /
+RUN chmod +x install.sh
+CMD /bin/bash -l /install.sh
