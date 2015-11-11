@@ -33,7 +33,6 @@ fi
 echo "Installing ManageIQ"
 cp config/database.pg.yml config/database.yml
 cp certs/v2_key.dev certs/v2_key
-bundle config build.nokogiri --use-system-libraries
 bundle install --without qpid development
 
 echo "Initialising DB"

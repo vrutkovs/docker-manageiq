@@ -22,6 +22,11 @@ RUN /bin/bash -l -c "rvm install ruby 2.2"
 RUN /bin/bash -l -c "rvm use 2.2 --default"
 RUN /bin/bash -l -c "gem install bundler rake"
 
+
+# Preinstall biggest gems which require a long compilation time
+RUN yum install -y libxml2-devel libxslt-devel
+RUN /bin/bash -l -c "gem install nokogiri -- --use-system-libraries"
+
 EXPOSE 3000 4000
 
 COPY createDB.sh /
