@@ -31,5 +31,7 @@ bundle exec rake db:migrate
 echo "EVM has been set up"
 
 echo "Starting EVM"
+export MIQ_SPARTAN=minimal
 bundle exec rake evm:start
-tail -f log/evm.log
+bundle exec rails s --binding=0.0.0.0
+tail -f log/evm.log -f log/production.log
