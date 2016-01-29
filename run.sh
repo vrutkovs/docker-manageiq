@@ -11,27 +11,21 @@ echo "waiting for the DB to start"
 sleep 5
 
 cd $DESTDIR
-bundle exec rake evm:stop || true
-
 # Store .bundle
 mv .bundle /tmp/
 git reset --hard
-git clean -fdx
-git pull --unshallow
+git pull --unshallow || true
 mv /tmp/.bundle .
 
 cp config/database.pg.yml config/database.yml
 cp certs/v2_key.dev certs/v2_key
-bundle install --without qpid development
 
-echo "Initialising DB"
-sudo -u postgres sh /createDB.sh
-bundle exec rake db:migrate
-
-echo "EVM has been set up"
+echo "Migrating DB"
+export RAILS_ENV=production
+bin/update
 
 echo "Starting EVM"
 export MIQ_SPARTAN=minimal
 bundle exec rake evm:start
-bundle exec rails s --binding=0.0.0.0
+bundle exec bin/rails s --binding=0.0.0.0
 tail -f log/evm.log -f log/production.log

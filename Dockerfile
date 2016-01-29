@@ -3,7 +3,7 @@ FROM centos/postgresql
 MAINTAINER Vadim Rutkovsky, https://github.com/vrutkovs
 #inspired by http://manageiq.org/community/install-from-source/
 
-RUN yum -y install git sudo tar postgresql-devel memcached
+RUN yum -y install git tar postgresql-devel memcached
 
 # 1. SCL
 #RUN yum -y install postgresql-devel memcached gcc-c++  libxml2-devel libxslt libxslt-devel
@@ -23,15 +23,14 @@ RUN yum -y install scl-utils \
         patch \
         which \
         bzip2
-RUN scl enable rh-ruby22 "gem install bundler && bundle config build.nokogiri --use-system-libraries"
+RUN scl enable rh-ruby22 "gem install bundler"
 
-COPY createDB.sh /
-RUN chmod +x createDB.sh
-COPY run.sh /
-RUN chmod +x run.sh
+EXPOSE 3000 4000
+
 COPY install.sh /
 RUN chmod +x install.sh
 RUN /bin/bash -l /install.sh
-EXPOSE 3000 4000
 
+COPY run.sh /
+RUN chmod +x run.sh
 CMD /bin/bash -l /run.sh

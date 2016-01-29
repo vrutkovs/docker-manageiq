@@ -1,11 +1,20 @@
 #!/bin/bash
 set -e
+localedef -f UTF-8 -i en_US en_US.UTF-8
 
 export DESTDIR="/manageiq"
 
 source /opt/rh/rh-ruby22/enable
 
 echo "Starting Postgres and memcached"
+
+echo "fsync=off" > /var/lib/pgsql/data/postgresql.conf
+echo "full_page_writes=off" >> /var/lib/pgsql/data/postgresql.conf
+echo "synchronous_commit=off" >> /var/lib/pgsql/data/postgresql.conf
+echo "listen_addresses = '*'" >> /var/lib/pgsql/data/postgresql.conf
+echo "local all all trust" > /var/lib/pgsql/data/pg_hba.conf
+echo "host all all 0.0.0.0/0 trust" >> /var/lib/pgsql/data/pg_hba.conf
+
 nohup /start_postgres.sh &
 nohup /usr/bin/memcached -u root &
 echo "waiting for the DB to start"
@@ -22,14 +31,16 @@ cd $DESTDIR
 echo "Commit `git rev-parse HEAD`"
 
 echo "Installing ManageIQ"
-cp config/database.pg.yml config/database.yml
-cp certs/v2_key.dev certs/v2_key
-bundle install --without qpid development
+export BUNDLE_WITHOUT=development
+echo "gem: --no-ri --no-rdoc --no-document" > ~/.gemrc
+bundle config build.nokogiri --use-system-libraries
 
 echo "Initialising DB"
-sudo -u postgres sh /createDB.sh
-bundle exec rake db:migrate
-bundle exec rake db:seed
+psql -c "CREATE USER root SUPERUSER PASSWORD 'smartvm';" -U postgres
+for i in test production development;do createdb vmdb_$i;done
+psql -c "alter database vmdb_production owner to root"
+echo "1" > REGION
+export RAILS_ENV=production
+bin/setup || true
 
-bin/setup
 echo "EVM has been set up"
