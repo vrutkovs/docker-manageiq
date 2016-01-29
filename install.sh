@@ -31,4 +31,5 @@ sudo -u postgres sh /createDB.sh
 bundle exec rake db:migrate
 bundle exec rake db:seed
 
+bin/setup
 echo "EVM has been set up"
