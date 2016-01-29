@@ -3,6 +3,8 @@ set -e
 
 export DESTDIR="/manageiq"
 
+source /opt/rh/rh-ruby22/enable
+
 echo "Starting Postgres and memcached"
 nohup /start_postgres.sh &
 nohup /usr/bin/memcached -u root &
