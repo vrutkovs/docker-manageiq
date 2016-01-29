@@ -13,9 +13,12 @@ sleep 5
 cd $DESTDIR
 bundle exec rake evm:stop || true
 
+# Store .bundle
+mv .bundle /tmp/
 git reset --hard
 git clean -fdx
 git pull --unshallow
+mv /tmp/.bundle .
 
 cp config/database.pg.yml config/database.yml
 cp certs/v2_key.dev certs/v2_key
