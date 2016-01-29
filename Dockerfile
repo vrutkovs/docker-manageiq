@@ -3,8 +3,7 @@ FROM centos/postgresql
 MAINTAINER Vadim Rutkovsky, https://github.com/vrutkovs
 #inspired by http://manageiq.org/community/install-from-source/
 
-RUN yum -y install tar git sudo perl-HTTP-Tiny
-RUN yum -y install postgresql-devel memcached
+RUN yum -y install tar git sudo postgresql-devel memcached
 
 # 1. SCL
 #RUN yum -y install postgresql-devel memcached gcc-c++  libxml2-devel libxslt libxslt-devel
