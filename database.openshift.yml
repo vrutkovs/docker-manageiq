@@ -2,7 +2,7 @@ production:
   adapter: postgresql
   encoding: unicode
   pool: 1
-  username: admin
+  username: postgres
   password: smartvm
   host: {{HOST}}
   port: 5432

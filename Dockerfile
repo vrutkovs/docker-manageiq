@@ -19,6 +19,7 @@ RUN yum -y install scl-utils \
         git \
         tar \
         postgresql \
+        postgresql-server \
         postgresql-devel \
         memcached \
         httpd \
@@ -32,6 +33,8 @@ RUN yum -y install scl-utils \
         patch \
         which \
         net-tools \
+        iproute \
+        psmisc \
         bzip2 && \
    yum clean all -y
 
