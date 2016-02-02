@@ -1,18 +1,19 @@
-#!/bin/bash
-set -e
+set -ex
 
 export DESTDIR="/manageiq"
 source /opt/rh/rh-ruby22/enable
 
 cd $DESTDIR
-# Store .bundle
-git reset --hard
-git pull --unshallow || true
-
 cp certs/v2_key.dev certs/v2_key
+
+echo "Updating DB config"
+cp /database.openshift.yml $DESTDIR/config/database.yml
+sed -i s/{{HOST}}/$POSTGRESQL_SERVICE_HOST/g $DESTDIR/config/database.yml
+cat $DESTDIR/config/database.yml
 
 echo "Migrating DB"
 export RAILS_ENV=production
+bin/rake db:migrate db:seed
 bin/update
 
 echo "Starting Memcached"

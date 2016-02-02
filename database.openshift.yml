@@ -1,12 +1,10 @@
 production:
   adapter: postgresql
   encoding: unicode
-  # For details on connection pooling, see rails configuration guide
-  # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 1
   username: admin
   password: smartvm
-  host: postgresql-manageiq.router.default.svc.cluster.local
+  host: {{HOST}}
   port: 5432
   database: vmdb_production
   wait_timeout: 5

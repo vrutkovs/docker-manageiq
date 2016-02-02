@@ -1,9 +1,8 @@
-#!/bin/bash
-set -e
+set -ex
+
 localedef -f UTF-8 -i en_US en_US.UTF-8
 
 export DESTDIR="/manageiq"
-
 REPO=${REPO:-https://github.com/ManageIQ/manageiq}
 BRANCH=${BRANCH:-master}
 echo "Repo: $REPO"
@@ -22,10 +21,8 @@ bundle config build.nokogiri --use-system-libraries
 
 echo "Initialising DB"
 export RAILS_ENV=production
-cp /database.openshift.yml /manageiq/config/database.yml
-# Don't prepare test DB
-sed -i s/test:vmdb:setup// bin/setup
-bin/setup
-
+bundle install
+cp $DESTDIR/certs/v2_key.dev $DESTDIR/certs/v2_key
+echo '0' > REGION
 
 echo "EVM has been set up"

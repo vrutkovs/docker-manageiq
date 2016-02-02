@@ -2,6 +2,12 @@ FROM centos:7
 
 MAINTAINER Vadim Rutkovsky, https://github.com/vrutkovs
 
+LABEL io.openshift.tags  manageiq
+LABEL io.openshift.wants postgres
+LABEL io.k8s.description ManageIQ Cloud Management Platform
+LABEL io.openshift.expose-services 3000:http,4000:http-2
+LABEL io.openshift.non-scalable true
+
 RUN yum -y install https://www.softwarecollections.org/en/scls/rhscl/rh-ruby22/epel-7-x86_64/download/rhscl-rh-ruby22-epel-7-x86_64.noarch.rpm
 RUN yum -y install scl-utils \
         rh-ruby22-ruby-devel \
@@ -12,7 +18,7 @@ RUN yum -y install scl-utils \
 # Important utils
         git \
         tar \
-        postgresql-client \
+        postgresql \
         postgresql-devel \
         memcached \
 # Gem's build requirements
@@ -23,15 +29,19 @@ RUN yum -y install scl-utils \
         make \
         patch \
         which \
-        bzip2
+        net-tools \
+        bzip2 && \
+   yum clean all -y
 
 EXPOSE 3000 4000
 
 COPY install.sh /
 RUN chmod +x install.sh
-COPY database.openshift.yml /
 RUN /bin/bash -l /install.sh
 
 COPY run.sh /
 RUN chmod +x run.sh
+
+COPY database.openshift.yml /
+
 CMD /bin/bash -l /run.sh
