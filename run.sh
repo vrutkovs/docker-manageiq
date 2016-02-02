@@ -12,6 +12,8 @@ cp certs/v2_key.dev certs/v2_key
 
 echo "Migrating DB"
 export RAILS_ENV=production
+bin/rake db:create
+bin/rake db:migrate db:seed
 bin/update
 
 echo "Starting Memcached"

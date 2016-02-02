@@ -21,10 +21,9 @@ bundle config build.nokogiri --use-system-libraries
 
 echo "Initialising DB"
 export RAILS_ENV=production
-cp /database.openshift.yml /manageiq/config/database.yml
-# Don't prepare test DB
-sed -i s/test:vmdb:setup// bin/setup
-bin/setup
-
+cp /database.openshift.yml $DESTDIR/config/database.yml
+bundle check || bundle install
+cp $DESTDIR/certs/v2_key.dev $DESTDIR/certs/v2_key
+echo '0' > REGION
 
 echo "EVM has been set up"
