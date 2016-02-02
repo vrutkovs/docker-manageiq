@@ -83,11 +83,7 @@ objects:
             imagePullPolicy: Always
             name: docker-manageiq-master
             ports:
-            - containerPort: 80
-              protocol: TCP
             - containerPort: 443
-              protocol: TCP
-            - containerPort: 5432
               protocol: TCP
             resources: {}
             securityContext:
@@ -118,7 +114,7 @@ objects:
       name: manageiq-route
     spec:
       port:
-        targetPort: "3000"
+        targetPort: "443"
       tls:
         termination: passthrough
       to:
@@ -133,9 +129,9 @@ objects:
     spec:
       ports:
       - name: http
-        port: 3000
+        port: 443
         protocol: TCP
-        targetPort: 3000
+        targetPort: 443
       selector:
         app: docker-manageiq
       sessionAffinity: None
