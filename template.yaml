@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: "Template"
+metadata:
+  name: manageiq
+  annotations:
+    description: "ManageIQ"
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      build: manageiq-build
+    name: centos
+  spec:
+    dockerImageRepository: centos
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      build: manageiq-build
+    name: manageiq
+  spec: {}
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      build: manageiq-build
+    name: manageiq-build
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: manageiq:latest
+    resources: {}
+    source:
+      contextDir: deployment
+      git:
+        uri: https://github.com/vrutkovs/docker-manageiq.git
+        ref: scl
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: centos:7
+      type: Docker
+    triggers:
+    - type: ConfigChange
+    - type: ImageChange
