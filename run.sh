@@ -1,5 +1,4 @@
-#!/bin/bash
-set -e
+set -ex
 
 export DESTDIR="/manageiq"
 source /opt/rh/rh-ruby22/enable

@@ -1,9 +1,8 @@
-#!/bin/bash
-set -e
+set -ex
+
 localedef -f UTF-8 -i en_US en_US.UTF-8
 
 export DESTDIR="/manageiq"
-
 REPO=${REPO:-https://github.com/ManageIQ/manageiq}
 BRANCH=${BRANCH:-master}
 echo "Repo: $REPO"
