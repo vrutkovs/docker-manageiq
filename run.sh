@@ -4,11 +4,18 @@ export DESTDIR="/var/www/miq/vmdb"
 source /opt/rh/rh-ruby22/enable
 
 cd $DESTDIR
+git reset --hard
+git pull --unshallow
+
+echo "Updated to commit `git log -1 --pretty=oneline`"
 
 echo "Updating DB config"
 cp /database.openshift.yml $DESTDIR/config/database.yml
 sed -i s/{{HOST}}/$POSTGRESQL_SERVICE_HOST/g $DESTDIR/config/database.yml
 cat $DESTDIR/config/database.yml
+
+echo "Updating gems"
+bundle check || bundle install
 
 echo "Migrating DB"
 export RAILS_ENV=production
