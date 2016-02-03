@@ -27,7 +27,7 @@ objects:
       resources: {}
       source:
         git:
-          ref: openshift
+          ref: s2i
           uri: https://github.com/vrutkovs/docker-manageiq.git
         type: Git
       strategy:
