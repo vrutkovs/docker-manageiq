@@ -118,11 +118,17 @@ objects:
           uri: https://github.com/vrutkovs/docker-manageiq.git
         type: Git
       strategy:
-        dockerStrategy:
+        customStrategy:
           from:
             kind: DockerImage
-            name: library/centos:7
-        type: Docker
+            name: openshift/sti-image-builder
+          env:
+            - name: IMAGE_NAME
+              value: library/centos:7
+            - name: CONTEXT_DIR
+              value: /2.0/
+          exposeDockerSocket: true
+        type: Custom
       triggers:
       - github:
           secret: secret101
