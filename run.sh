@@ -14,6 +14,12 @@ cp /database.openshift.yml $DESTDIR/config/database.yml
 sed -i s/{{HOST}}/$POSTGRESQL_SERVICE_HOST/g $DESTDIR/config/database.yml
 cat $DESTDIR/config/database.yml
 
+echo "Setting up httpd"
+mkdir -p "/var/www/miq/vmdb/log/apache"
+mv /etc/httpd/conf.d/ssl.conf{,.orig}
+touch /etc/httpd/conf.d/ssl.conf
+cp /apache.conf /etc/httpd/conf.d/manageiq.conf
+
 echo "Updating gems"
 bundle check || bundle install
 
@@ -21,12 +27,6 @@ echo "Migrating DB"
 export RAILS_ENV=production
 bundle exec rake db:migrate
 bundle exec rake db:reset
-
-echo "Setting up httpd"
-mkdir -p "/var/www/miq/vmdb/log/apache"
-mv /etc/httpd/conf.d/ssl.conf{,.orig}
-touch /etc/httpd/conf.d/ssl.conf
-cp /apache.conf /etc/httpd/conf.d/manageiq.conf
 
 echo "Applying dirty hacks"
 export RUBY_GC_HEAP_GROWTH_MAX_SLOTS=300000 # default: no limit
