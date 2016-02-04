@@ -2,11 +2,12 @@ FROM centos/ruby-22-centos7
 
 MAINTAINER Vadim Rutkovsky, https://github.com/vrutkovs
 
-LABEL io.openshift.tags  manageiq
-LABEL io.openshift.wants postgres
-LABEL io.k8s.description ManageIQ Cloud Management Platform
-LABEL io.openshift.expose-services 443:https
-LABEL io.openshift.non-scalable true
+LABEL io.openshift.tags="manageiq" \
+      io.openshift.wants="postgres" \
+      io.k8s.description="ManageIQ Cloud Management Platform" \
+      io.openshift.expose-services="443:https" \
+      io.openshift.non-scalable="true" \
+      io.openshift.s2i.scripts-url="image:///usr/local/sti"
 
 USER 0
 
@@ -46,4 +47,6 @@ COPY database.openshift.yml /
 COPY apache.conf /
 COPY run.sh /
 
-CMD /bin/bash -l /run.sh
+COPY bin/ /usr/local/sti
+
+CMD ["usage"]

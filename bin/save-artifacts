@@ -1,0 +1,2 @@
+#!/bin/bash -ex
+tar cf - /var/www/miq/vmdb/.bundle /var/www/miq/vmdb/public/assets/
