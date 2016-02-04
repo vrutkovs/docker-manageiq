@@ -11,6 +11,7 @@ objects:
     metadata:
       name: postgresql
       labels:
+        app: docker-manageiq
         template: postgresql-ephemeral-template
     spec:
       strategy:
@@ -44,7 +45,7 @@ objects:
           containers:
             -
               name: postgresql
-              image: 'registry.access.redhat.com/rhscl/postgresql-94-rhel7:latest'
+              image: 'centos/postgresql-94-centos7:latest'
               ports:
                 -
                   containerPort: 5432
@@ -81,6 +82,7 @@ objects:
     metadata:
       name: postgresql
       labels:
+        app: docker-manageiq
         template: postgresql-ephemeral-template
     spec:
       ports:
