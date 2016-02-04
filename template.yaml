@@ -117,7 +117,7 @@ objects:
         dockerStrategy:
           from:
             kind: DockerImage
-            name: library/centos:7
+            name: centos/ruby-22-centos7:latest
         type: Docker
       triggers:
       - github:
@@ -165,6 +165,11 @@ objects:
           secret: secret101
         type: Generic
       - type: ConfigChange
+      - type: ImageChange
+        imageChange:
+          from:
+            kind: ImageStreamTag
+            name: 'manageiq:base'
     status:
       lastVersion: 0
   - kind: DeploymentConfig

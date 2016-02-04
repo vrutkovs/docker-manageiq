@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos/ruby-22-centos7
 
 MAINTAINER Vadim Rutkovsky, https://github.com/vrutkovs
 
