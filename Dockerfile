@@ -8,6 +8,8 @@ LABEL io.k8s.description ManageIQ Cloud Management Platform
 LABEL io.openshift.expose-services 443:https
 LABEL io.openshift.non-scalable true
 
+USER 0
+
 RUN yum -y install https://www.softwarecollections.org/en/scls/rhscl/rh-ruby22/epel-7-x86_64/download/rhscl-rh-ruby22-epel-7-x86_64.noarch.rpm
 RUN yum -y install scl-utils \
         rh-ruby22-ruby-devel \
