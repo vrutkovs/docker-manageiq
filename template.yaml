@@ -11,7 +11,6 @@ objects:
     metadata:
       name: postgresql
       labels:
-        app: docker-manageiq
         template: postgresql-ephemeral-template
     spec:
       strategy:
@@ -82,7 +81,6 @@ objects:
     metadata:
       name: postgresql
       labels:
-        app: docker-manageiq
         template: postgresql-ephemeral-template
     spec:
       ports:
@@ -98,21 +96,49 @@ objects:
   - kind: ImageStream
     apiVersion: v1
     metadata:
-      labels:
-        app: docker-manageiq
-      name: docker-manageiq
+      name: manageiq
   - kind: BuildConfig
     apiVersion: v1
     metadata:
       creationTimestamp: null
-      labels:
-        app: docker-manageiq
-      name: docker-manageiq
+      name: manageiq-base
     spec:
       output:
         to:
           kind: ImageStreamTag
-          name: docker-manageiq:latest
+          name: manageiq:base
+      resources: {}
+      source:
+        git:
+          ref: s2i
+          uri: https://github.com/vrutkovs/docker-manageiq.git
+        type: Git
+      strategy:
+        dockerStrategy:
+          from:
+            kind: DockerImage
+            name: library/centos:7
+        type: Docker
+      triggers:
+      - github:
+          secret: secret101
+        type: GitHub
+      - generic:
+          secret: secret101
+        type: Generic
+      - type: ConfigChange
+    status:
+      lastVersion: 0
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      creationTimestamp: null
+      name: manageiq-s2i
+    spec:
+      output:
+        to:
+          kind: ImageStreamTag
+          name: manageiq:latest
       resources: {}
       source:
         git:
@@ -123,12 +149,10 @@ objects:
         customStrategy:
           from:
             kind: DockerImage
-            name: openshift/sti-image-builder
+            name: manageiq:base
           env:
-            - name: IMAGE_NAME
-              value: library/centos:7
             - name: CONTEXT_DIR
-              value: /2.0/
+              value: /var/www/miq/vmdb
           exposeDockerSocket: true
         type: Custom
       triggers:
@@ -147,14 +171,11 @@ objects:
       annotations:
         openshift.io/scc: privileged
       creationTimestamp: null
-      labels:
-        app: docker-manageiq
-      name: docker-manageiq-master
+      name: manageiq-deploy
     spec:
       replicas: 1
       selector:
-        app: docker-manageiq
-        deploymentconfig: docker-manageiq-master
+        deploymentconfig: manageiq-deploy
       strategy:
         resources: {}
         rollingParams:
@@ -170,13 +191,14 @@ objects:
             openshift.io/scc: privileged
           creationTimestamp: null
           labels:
-            app: docker-manageiq
-            deploymentconfig: docker-manageiq-master
+            deploymentconfig: manageiq-deploy
         spec:
           containers:
-          - image: docker-manageiq:latest
+          - image: manageiq:latest
             imagePullPolicy: Always
-            name: docker-manageiq-master
+            name: manageiq-master
+            labels:
+              app: manageiq
             ports:
             - containerPort: 443
               protocol: TCP
@@ -196,16 +218,14 @@ objects:
       - imageChangeParams:
           automatic: true
           containerNames:
-          - docker-manageiq-master
+          - manageiq-master
           from:
             kind: ImageStreamTag
-            name: docker-manageiq:latest
+            name: manageiq:latest
         type: ImageChange
   - kind: Route
     apiVersion: v1
     metadata:
-      labels:
-        app: docker-manageiq
       name: manageiq-route
     spec:
       port:
@@ -218,8 +238,6 @@ objects:
   - kind: Service
     apiVersion: v1
     metadata:
-      labels:
-        app: docker-manageiq
       name: www
     spec:
       ports:
@@ -228,6 +246,6 @@ objects:
         protocol: TCP
         targetPort: 443
       selector:
-        app: docker-manageiq
+        app: manageiq
       sessionAffinity: None
       type: ClusterIP
