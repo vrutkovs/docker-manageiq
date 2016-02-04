@@ -42,14 +42,8 @@ RUN yum -y install scl-utils \
 
 EXPOSE 443
 
-COPY install.sh /
-RUN chmod +x install.sh
-RUN /bin/bash -l /install.sh
-
-COPY run.sh /
-RUN chmod +x run.sh
-
 COPY database.openshift.yml /
 COPY apache.conf /
+COPY run.sh /
 
 CMD /bin/bash -l /run.sh

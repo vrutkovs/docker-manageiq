@@ -142,8 +142,8 @@ objects:
       resources: {}
       source:
         git:
-          ref: s2i
-          uri: https://github.com/vrutkovs/docker-manageiq.git
+          ref: master
+          uri: https://github.com/manageiq/manageiq
         type: Git
       strategy:
         customStrategy:
@@ -151,6 +151,8 @@ objects:
             kind: DockerImage
             name: manageiq:base
           env:
+            - name: STI_SCRIPTS_URL
+              value: https://raw.githubusercontent.com/vrutkovs/docker-manageiq/s2i/bin
             - name: CONTEXT_DIR
               value: /var/www/miq/vmdb
           exposeDockerSocket: true

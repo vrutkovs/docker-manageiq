@@ -30,5 +30,4 @@ echo '0' > REGION
 bundle exec rake evm:compile_assets
 bundle exec rake evm:compile_sti_loader
 
-
 echo "EVM has been set up"
