@@ -13,13 +13,8 @@ echo "gem: --no-ri --no-rdoc --no-document" > ~/.gemrc
 gem install bundler
 bundle config build.nokogiri --use-system-libraries
 
-if [ -d Gemfile.lock ]; then
-	echo "Installing gems"
-	bundle install --retry=3 --jobs=3 --deployment
-else
-	echo "Updating gems"
-	bundle check || bundle update --local || bundle update --retry=3 --jobs=3
-fi
+echo "Installing gems"
+bundle install --retry=3 --jobs=3 --deployment
 
 cp $DESTDIR/certs/v2_key.dev $DESTDIR/certs/v2_key
 
