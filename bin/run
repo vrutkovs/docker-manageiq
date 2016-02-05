@@ -17,8 +17,8 @@ cp /apache.conf /etc/httpd/conf.d/manageiq.conf
 
 echo "Migrating DB"
 export RAILS_ENV=production
-bundle exec rake db:migrate
-bundle exec rake db:reset
+bundle exec rake db:migrate db:seed
+bundle exec rake db:schema:dump
 
 echo "Applying dirty hacks"
 export RUBY_GC_HEAP_GROWTH_MAX_SLOTS=300000 # default: no limit
