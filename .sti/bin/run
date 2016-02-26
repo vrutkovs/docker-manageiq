@@ -1,14 +1,11 @@
 #!/bin/bash -ex
 
 export DESTDIR="/var/www/miq/vmdb"
-export HTTP_PROXY=http://proxy.default.svc.cluster.local:3128
-export HTTPS_PROXY=https://proxy.default.svc.cluster.local:3128
 
 source /opt/rh/rh-ruby22/enable
 
 cd $DESTDIR
 echo "Updating DB config"
-cp /database.openshift.yml $DESTDIR/config/database.yml
 sed -i s/{{HOST}}/$POSTGRESQL_SERVICE_HOST/g $DESTDIR/config/database.yml
 cat $DESTDIR/config/database.yml
 

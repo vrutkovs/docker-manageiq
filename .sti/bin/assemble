@@ -17,13 +17,10 @@ export BUNDLE_WITHOUT=test:metric_fu:development
 bundle config build.nokogiri --use-system-libraries
 
 echo "Installing gems"
-if [ -f Gemfile.lock ]; then
-	bundle install --deployment
-else
-	bundle install --retry=3 --jobs=3
-fi
+bundle install --retry=3 --jobs=3
 
 cp $DESTDIR/certs/v2_key.dev $DESTDIR/certs/v2_key
+cp /database.openshift.yml $DESTDIR/config/database.yml
 
 echo "Running misc tasks"
 echo '0' > REGION
