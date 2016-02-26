@@ -7,7 +7,7 @@ LABEL io.openshift.tags="manageiq" \
       io.k8s.description="ManageIQ Cloud Management Platform" \
       io.openshift.expose-services="443:https" \
       io.openshift.non-scalable="true" \
-      io.openshift.s2i.scripts-url="image:///usr/local/sti"
+      io.openshift.s2i.scripts-url="image:///usr/libexec/sti"
 
 USER 0
 
@@ -51,6 +51,6 @@ EXPOSE 443
 COPY database.openshift.yml /
 COPY apache.conf /
 COPY run.sh /
-COPY bin/ /usr/local/sti
+COPY bin/ /usr/libexec/sti
 
-CMD ["usage"]
+CMD ["/usr/libexec/sti/usage"]

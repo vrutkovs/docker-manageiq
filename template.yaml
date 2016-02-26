@@ -152,7 +152,7 @@ objects:
             name: manageiq:base
           env:
             - name: STI_SCRIPTS_URL
-              value: https://raw.githubusercontent.com/vrutkovs/docker-manageiq/s2i/bin
+              value: image:///usr/libexec/sti
             - name: CONTEXT_DIR
               value: /var/www/miq/vmdb
           exposeDockerSocket: true
