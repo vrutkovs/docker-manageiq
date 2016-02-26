@@ -2,7 +2,7 @@
 
 export DESTDIR="/var/www/miq/vmdb"
 export HTTP_PROXY=http://proxy.default.svc.cluster.local:3128
-export HTTPS_PROXY=http://proxy.default.svc.cluster.local:3128
+export HTTPS_PROXY=https://proxy.default.svc.cluster.local:3128
 
 source /opt/rh/rh-ruby22/enable
 
@@ -18,10 +18,9 @@ mv /etc/httpd/conf.d/ssl.conf{,.orig}
 touch /etc/httpd/conf.d/ssl.conf
 cp /apache.conf /etc/httpd/conf.d/manageiq.conf
 
-echo "Migrating DB"
+echo "Resetting DB"
 export RAILS_ENV=production
-bundle exec rake db:migrate db:seed
-bundle exec rake db:schema:dump
+bundle exec rake db:reset
 
 echo "Applying dirty hacks"
 export RUBY_GC_HEAP_GROWTH_MAX_SLOTS=300000 # default: no limit
