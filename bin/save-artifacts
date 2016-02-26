@@ -1,5 +1,0 @@
-#!/bin/bash -ex
-tar cf - /var/www/miq/vmdb/vendor/bundle \
-         /var/www/miq/vmdb/Gemfile.lock \
-         /var/www/miq/vmdb/db/schema.rb \
-         /var/www/miq/vmdb/public/assets/
