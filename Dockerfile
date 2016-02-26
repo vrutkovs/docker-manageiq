@@ -6,8 +6,7 @@ LABEL io.openshift.tags="manageiq" \
       io.openshift.wants="postgres" \
       io.k8s.description="ManageIQ Cloud Management Platform" \
       io.openshift.expose-services="443:https" \
-      io.openshift.non-scalable="true" \
-      io.openshift.s2i.scripts-url="image:///usr/libexec/sti"
+      io.openshift.non-scalable="true"
 
 USER 0
 
@@ -48,9 +47,9 @@ RUN source /opt/rh/rh-ruby22/enable && \
 
 EXPOSE 443
 
-COPY database.openshift.yml /
-COPY apache.conf /
-COPY run.sh /
-COPY bin/ /usr/libexec/sti
+COPY ./database.openshift.yml /
+COPY ./apache.conf /
+COPY ./run.sh /
+COPY ./.sti/bin/ /usr/libexec/sti
 
 CMD ["/usr/libexec/sti/usage"]

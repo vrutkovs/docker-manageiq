@@ -152,7 +152,7 @@ objects:
             name: openshift/origin-sti-builder
           env:
             - name: IMAGE_NAME
-              value: manageiq:base
+              value: library/manageiq:base
             - name: STI_SCRIPTS_URL
               value: image:///usr/libexec/sti
             - name: CONTEXT_DIR
