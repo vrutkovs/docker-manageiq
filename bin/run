@@ -1,6 +1,9 @@
 #!/bin/bash -ex
 
 export DESTDIR="/var/www/miq/vmdb"
+export HTTP_PROXY=http://proxy.default.svc.cluster.local:3128
+export HTTPS_PROXY=http://proxy.default.svc.cluster.local:3128
+
 source /opt/rh/rh-ruby22/enable
 
 cd $DESTDIR

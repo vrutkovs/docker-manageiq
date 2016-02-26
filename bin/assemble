@@ -1,5 +1,8 @@
 #!/bin/bash -ex
 
+export HTTP_PROXY=http://proxy.default.svc.cluster.local:3128
+export HTTPS_PROXY=http://proxy.default.svc.cluster.local:3128
+
 export DESTDIR="/var/www/miq/vmdb"
 
 mkdir -p $DESTDIR
