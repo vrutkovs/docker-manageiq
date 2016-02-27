@@ -1,5 +1,7 @@
 #!/bin/bash -ex
 
+export DESTDIR="/var/www/miq/vmdb"
+
 pushd ${DESTDIR} >/dev/null
 if [ -d ./bundle/ruby -a -f ./Gemfile.lock ]; then
   tar cf - ./bundle/ruby ./Gemfile.lock
