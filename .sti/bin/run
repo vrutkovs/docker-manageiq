@@ -24,7 +24,7 @@ bundle exec rake evm:compile_sti_loader
 
 echo "Resetting DB"
 export RAILS_ENV=production
-bundle exec rake db:reset
+bundle exec rake db:migrate db:reset
 
 echo "Applying dirty hacks"
 export RUBY_GC_HEAP_GROWTH_MAX_SLOTS=300000 # default: no limit
