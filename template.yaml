@@ -153,8 +153,6 @@ objects:
           env:
             - name: IMAGE_NAME
               value: library/manageiq:base
-            - name: STI_SCRIPTS_URL
-              value: image:///usr/libexec/sti
             - name: CONTEXT_DIR
               value: /var/www/miq/vmdb
           exposeDockerSocket: true
