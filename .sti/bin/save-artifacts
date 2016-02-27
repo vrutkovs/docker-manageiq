@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+pushd ${DESTDIR} >/dev/null
+
+if [ -d ./bundle/ruby -a -f ./Gemfile.lock ]; then
+  tar cf - bundle/ruby ./Gemfile.lock
+fi
+
+popd >/dev/null

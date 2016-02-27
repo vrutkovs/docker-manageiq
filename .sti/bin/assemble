@@ -6,6 +6,11 @@ mkdir -p $DESTDIR
 cp -Rf /tmp/src/. $DESTDIR
 cd $DESTDIR
 
+if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+  echo "Restoring build artifacts"
+  mv /tmp/artifacts/* $DESTDIR/.
+fi
+
 source /opt/rh/rh-ruby22/enable
 echo "Installing bundler"
 echo "gem: --no-ri --no-rdoc --no-document" > ~/.gemrc
