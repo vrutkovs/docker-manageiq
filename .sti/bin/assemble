@@ -21,7 +21,7 @@ cp /database.openshift.yml $DESTDIR/config/database.yml
 
 echo "Running misc tasks"
 echo '0' > REGION
-bundle exec rake evm:compile_assets
-bundle exec rake evm:compile_sti_loader
+bundle exec rake evm:compile_assets || true
+bundle exec rake evm:compile_sti_loader || true
 
 echo "EVM has been set up"
