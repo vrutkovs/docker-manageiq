@@ -15,6 +15,13 @@ mv /etc/httpd/conf.d/ssl.conf{,.orig}
 touch /etc/httpd/conf.d/ssl.conf
 cp /apache.conf /etc/httpd/conf.d/manageiq.conf
 
+echo "Starting Memcached"
+nohup /usr/bin/memcached -u root &
+
+echo "Precompiling assets"
+bundle exec rake evm:compile_assets
+bundle exec rake evm:compile_sti_loader
+
 echo "Resetting DB"
 export RAILS_ENV=production
 bundle exec rake db:reset
@@ -33,9 +40,6 @@ export APPLIANCE_PG_SERVICE=postgresql
 export APPLIANCE_PG_SCL_NAME=rh-postgresql94
 export APPLIANCE_PG_PACKAGE_NAME=${APPLIANCE_PG_SCL_NAME}-postgresql-server
 touch /etc/chrony.conf
-
-echo "Starting Memcached"
-nohup /usr/bin/memcached -u root &
 
 echo "Starting EVM"
 bundle exec rake evm:start
