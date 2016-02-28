@@ -5,24 +5,18 @@ export DESTDIR="/var/www/miq/vmdb"
 source /opt/rh/rh-ruby22/enable
 
 cd $DESTDIR
-echo "Updating DB config"
 sed -i s/{{HOST}}/$POSTGRESQL_SERVICE_HOST/g $DESTDIR/config/database.yml
 cat $DESTDIR/config/database.yml
 
-echo "Setting up httpd"
 mkdir -p "$DESTDIR/log/apache"
 mv /etc/httpd/conf.d/ssl.conf{,.orig}
 touch /etc/httpd/conf.d/ssl.conf
 cp /apache.conf /etc/httpd/conf.d/manageiq.conf
 
-echo "Starting Memcached"
 nohup /usr/bin/memcached -u root &
-
-echo "Precompiling assets"
 bundle exec rake evm:compile_assets
 bundle exec rake evm:compile_sti_loader
 
-echo "Resetting DB"
 export RAILS_ENV=production
 export DISABLE_DATABASE_ENVIRONMENT_CHECK=1
 bundle exec rake db:migrate db:reset
@@ -42,12 +36,9 @@ export APPLIANCE_PG_SCL_NAME=rh-postgresql94
 export APPLIANCE_PG_PACKAGE_NAME=${APPLIANCE_PG_SCL_NAME}-postgresql-server
 touch /etc/chrony.conf
 
-echo "Starting EVM"
-bundle exec rake evm:start
-
 # ManageIQ kills apache during preparation stage
 # We should start it as soon as evm:status reports UI worker is ready
-
+bundle exec rake evm:start
 SLEEP_TIME=5
 ITER=0
 until `bundle exec rake evm:status | grep -q MiqUiWorker` || [ $ITER -eq 20 ]; do
@@ -56,5 +47,4 @@ until `bundle exec rake evm:status | grep -q MiqUiWorker` || [ $ITER -eq 20 ]; d
 done
 
 nohup /usr/sbin/apachectl &
-
 tail -f $DESTDIR/log/evm.log -f $DESTDIR/log/production.log

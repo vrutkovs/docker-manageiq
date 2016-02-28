@@ -6,13 +6,11 @@ mkdir -p $DESTDIR
 cp -Rf /tmp/src/. $DESTDIR
 cd $DESTDIR
 
-echo "Installing ManageIQ"
 source /opt/rh/rh-ruby22/enable
 export BUNDLE_WITHOUT=test:metric_fu:development
 bundle config build.nokogiri --use-system-libraries
 
 ADDTL_BUNDLE_ARGS=""
-echo "Installing gems"
 if [ -f Gemfile.lock ]; then
   ADDTL_BUNDLE_ARGS="--deployment"
 fi
@@ -21,9 +19,4 @@ bundle clean -V
 
 cp $DESTDIR/certs/v2_key.dev $DESTDIR/certs/v2_key
 cp /database.openshift.yml $DESTDIR/config/database.yml
-
-echo "Running misc tasks"
 echo '0' > REGION
-
-
-echo "EVM has been set up"
