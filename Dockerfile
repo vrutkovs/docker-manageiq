@@ -40,6 +40,11 @@ RUN yum -y install scl-utils \
         bzip2 && \
    yum clean all -y
 
+# Always use updated bundler
+RUN source /opt/rh/rh-ruby22/enable && \
+    echo "gem: --no-ri --no-rdoc --no-document" > ~/.gemrc && \
+    gem install bundler
+
 EXPOSE 443
 
 COPY ./database.openshift.yml /

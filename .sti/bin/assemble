@@ -6,10 +6,8 @@ mkdir -p $DESTDIR
 cp -Rf /tmp/src/. $DESTDIR
 cd $DESTDIR
 
+echo "Installing ManageIQ"
 source /opt/rh/rh-ruby22/enable
-echo "Installing bundler"
-echo "gem: --no-ri --no-rdoc --no-document" > ~/.gemrc
-gem install bundler
 export BUNDLE_WITHOUT=test:metric_fu:development
 bundle config build.nokogiri --use-system-libraries
 
