@@ -101,7 +101,7 @@ objects:
     apiVersion: v1
     metadata:
       creationTimestamp: null
-      name: manageiq-base
+      name: manageiq
     spec:
       output:
         to:
