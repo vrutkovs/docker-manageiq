@@ -146,17 +146,18 @@ objects:
           uri: https://github.com/manageiq/manageiq
         type: Git
       strategy:
-        customStrategy:
+        type: Source
+        sourceStrategy:
           from:
-            kind: DockerImage
-            name: openshift/origin-sti-builder
+            kind: ImageStreamTag
+            name: 'manageiq:base'
           env:
-            - name: IMAGE_NAME
-              value: library/manageiq:base
-            - name: CONTEXT_DIR
+            -
+              name: CONTEXT_DIR
               value: /var/www/miq/vmdb
-          exposeDockerSocket: true
-        type: Custom
+          scripts: 'image:///usr/libexec/sti'
+          incremental: true
+          forcePull: true
       triggers:
       - github:
           secret: secret101
