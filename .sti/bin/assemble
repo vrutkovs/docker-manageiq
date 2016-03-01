@@ -14,7 +14,10 @@ ADDTL_BUNDLE_ARGS=""
 if [ -f Gemfile.lock ]; then
   ADDTL_BUNDLE_ARGS="--deployment"
 fi
-bundle install --retry=3 --jobs=3 --path ./bundle $ADDTL_BUNDLE_ARGS
+bundle install --retry=3 --jobs=3 --path ./bundle $ADDTL_BUNDLE_ARGS; rc=$?
+if [ "$rc" -ne 0 ]; then
+  bundle update --path ./bundle
+fi
 bundle clean -V
 
 cp $DESTDIR/certs/v2_key.dev $DESTDIR/certs/v2_key
