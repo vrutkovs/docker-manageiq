@@ -19,7 +19,7 @@ bundle exec rake evm:compile_sti_loader
 
 export RAILS_ENV=production
 export DISABLE_DATABASE_ENVIRONMENT_CHECK=1
-bundle exec rake db:purge db:create db:migrate
+bundle exec rake db:purge db:create db:migrate db:seed
 
 echo "Applying dirty hacks"
 export RUBY_GC_HEAP_GROWTH_MAX_SLOTS=300000 # default: no limit
@@ -44,6 +44,7 @@ ITER=0
 until `bundle exec rake evm:status | grep -q MiqUiWorker` || [ $ITER -eq 20 ]; do
    ITER=$(( ITER+1 ))
    sleep $(( SLEEP_TIME ))
+   bundle exec rake evm:status
 done
 
 nohup /usr/sbin/apachectl &
