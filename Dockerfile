@@ -12,14 +12,14 @@ RUN yum -y install tar git sudo postgresql-devel memcached
 #RUN scl enable rh-ruby22 bash
 
 # 2. RVM
-RUN yum install -y ruby-devel
+RUN yum install -y ruby-devel nodejs npm
 RUN command curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
 RUN curl -sSL https://get.rvm.io | rvm_tar_command=tar bash -s stable
 RUN source /etc/profile.d/rvm.sh
 RUN echo "gem: --no-ri --no-rdoc --no-document" > ~/.gemrc
 RUN /bin/bash -l -c "rvm requirements"
-RUN /bin/bash -l -c "rvm install ruby 2.2"
-RUN /bin/bash -l -c "rvm use 2.2 --default"
+RUN /bin/bash -l -c "rvm install ruby 2.3.0"
+RUN /bin/bash -l -c "rvm use 2.3.0 --default"
 RUN /bin/bash -l -c "gem install bundler rake"
 
 
