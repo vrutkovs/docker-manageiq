@@ -32,6 +32,7 @@ RUN yum -y install scl-utils \
         libxml2-devel \
         libxslt-devel \
         make \
+        cmake \
         patch \
         which \
         net-tools \
